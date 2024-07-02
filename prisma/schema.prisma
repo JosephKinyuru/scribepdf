@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User2 {
+  id          String    @id      @unique
+  email       String             @unique
+
+  File        File[]
+  Message     Message[]
+
+  stripeCustomerId         String?     @unique @map(name: "stripe_cusomer_id")
+  stripeSubscriptionId     String?     @unique @map(name: "stripe_subscription_is")
+  stripePriceId            String?             @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd   DateTime?           @map(name: "stripe_current_period_end")
+}
+
+enum UploadStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
+}
+
+model File {
+  id    String  @id @default(cuid())
+  name  String
+
+  uploadStatus  UploadStatus @default(PENDING)
+
+  url          String
+  key          String
+  messages     Message[]
+
+  createdAt DateTime  @default(now())
+  upDatedAt DateTime  @updatedAt
+
+  User      User2?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model Message {
+  id        String       @id @default(cuid())
+  text      String       @db.Text()
+
+  isUserMessage  Boolean 
+
+  createdAt DateTime  @default(now())
+  upDatedAt DateTime  @updatedAt
+
+  User      User2?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  File      File?    @relation(fields: [fileId], references: [id])
+  fileId    String?
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// CASECOBRA MODELS AND ENUMS
+
+enum PhoneModel {
+  iphonex
+  iphone11
+  iphone12
+  iphone13
+  iphone14
+  iphone15
+}
+
+enum CaseMaterial {
+  silicone
+  polycarbonate
+}
+
+enum CaseFinish {
+  smooth
+  textured
+}
+
+enum CaseColor {
+  black
+  blue
+  rose
+}
+
+enum OrderStatus {
+  fulfilled
+  shipped
+  awaiting_shipment
+}
+
+model Configuration {
+  id                   String @id @default(cuid())
+  width                Int
+  height               Int
+  imageUrl             String
+  model                PhoneModel?
+  material             CaseMaterial?
+  finish               CaseFinish?
+  color                CaseColor?
+  croppedImageUrl      String?
+  Order                Order[]
+}
+
+model User {
+  id                    String     @id @default(cuid())
+  email                 String
+  Order                 Order[]
+
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+}
+
+model Order {
+  id                    String               @id @default(cuid())
+  configurationId       String
+  configuration         Configuration        @relation(fields: [configurationId], references: [id])
+  user                  User                 @relation(fields: [userId], references: [id])
+  userId                String
+  amount                Float
+  isPaid                Boolean              @default(false)
+  status                OrderStatus          @default(awaiting_shipment)
+
+  shippingAddress       ShippingAddress?     @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId     String?
+
+  billingAddress        BillingAddress?     @relation(fields: [billingAddressId], references: [id])
+  billingAddressId      String?
+
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+}
+
+model ShippingAddress {
+  id                    String @id @default(cuid())
+  name                  String
+  street                String
+  city                  String
+  postalCode            String
+  country               String
+  state                 String?
+  phoneNumber           String?
+  orders                Order[]
+}
+
+model BillingAddress {
+  id                    String @id @default(cuid())
+  name                  String
+  street                String
+  city                  String
+  postalCode            String
+  country               String
+  state                 String?
+  phoneNumber           String?
+  orders                Order[]
+}
