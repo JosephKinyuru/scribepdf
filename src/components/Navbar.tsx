@@ -5,6 +5,7 @@ import { SignInButton, SignUpButton } from "@clerk/nextjs"
 import { ArrowRight } from "lucide-react"
 import { currentUser, } from "@clerk/nextjs/server"
 import UserAccountNav from "./UserAccountNav"
+import MobileNav from "./MobileNav"
 
 const Navbar = async () => {
 
@@ -20,6 +21,9 @@ const Navbar = async () => {
                 >
                     <span>intelliPDF</span>
                 </Link>
+
+                <MobileNav isAuth={!!user}/>
+
                 <div className="hidden items-center space-x-4 sm:flex">
                     {!user ? (
                         <>
