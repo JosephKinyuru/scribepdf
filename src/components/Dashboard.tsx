@@ -9,8 +9,13 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import UploadButton from "./UploadButton"
 import { trpc } from "@/app/_trpc/client"
+import { getUserSubscriptionPlan } from "@/lib/stripe"
 
-const Dashboard = () => {
+interface PageProps {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
+}
+
+const Dashboard = ({subscriptionPlan}: PageProps) => {
 
   const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null)
 
@@ -41,7 +46,7 @@ const Dashboard = () => {
                 My Files
             </h1>
 
-            <UploadButton/>
+            <UploadButton isSubscribed={subscriptionPlan.isSubscribed}/>
         </div>
 
         {/* Display User Files */}
