@@ -18,14 +18,16 @@ export const formatPrice = (price:number) => {
 
 export function constructMetadata({
   title = "IntelliPDF chat with your documents in seconds",
-  description = "Get more insight from pdf documents with AI assistance",
+  description = "IntelliPDF is an open source software to make chatting to your PDF files easy",
   image = '/thumbnail.png',
-  icons = '/favicon.ico'
+  icons = '/favicon.ico',
+  noIndex = false
 }: {
   title?: string
   description?: string
   image?: string
   icons?: string
+  noIndex?: boolean
 } = {}) : Metadata {
   return {
     title,
@@ -43,7 +45,14 @@ export function constructMetadata({
       creator: "@josephk1nyuru",
     },
     icons,
-    metadataBase: new URL('https://casecobra-bice.vercel.app/')
+    metadataBase: new URL('https://intellipdf-nine.vercel.app'),
+    themeColor: '#FFF',
+    ...(noIndex && {
+      robots: {
+        index: false,
+        follow: false
+      }
+    })
   }
 }
 
