@@ -78,7 +78,7 @@ const onUploadComplete = async ({
 
     // Vectorize and index entire document
 
-    const pineconeIndex = pinecone.index("intelli-pdf")
+    const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX!)
 
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
@@ -87,6 +87,8 @@ const onUploadComplete = async ({
     await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
       pineconeIndex,
       namespace: createdFile.id,
+      maxConcurrency: 5,
+      textKey: "text"
     })
 
     await db.file.update({
