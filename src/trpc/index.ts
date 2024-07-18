@@ -2,16 +2,16 @@ import {
   privateProcedure,
   publicProcedure,
   router,
-} from './trpc'
-import { TRPCError } from '@trpc/server'
-import { db } from '@/db'
-import { z } from 'zod'
-import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
-import { absoluteUrl } from '@/lib/utils'
-import { currentUser } from '@clerk/nextjs/server'
-import { getUserSubscriptionPlan, stripe } from '@/lib/stripe'
-import { PLANS } from '@/config/stripe'
-
+} from './trpc';
+import { TRPCError } from '@trpc/server';
+import { db } from '@/db';
+import { z } from 'zod';
+import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query';
+import { absoluteUrl } from '@/lib/utils';
+import { currentUser } from '@clerk/nextjs/server';
+import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
+import { PLANS } from '@/config/stripe';
+import { utapi } from '@/server/uploadthing';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -151,6 +151,14 @@ export const appRouter = router({
           id: input.id,
         },
       })
+
+      // Step 3: Delete the file from UploadThing (S3)
+      try {
+        await utapi.deleteFiles(file.key); 
+      } catch (error) {
+        console.error('Error deleting file from UploadThing:', error);
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to delete file from UploadThing' });
+      }
 
       return file
     }),
