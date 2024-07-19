@@ -1,30 +1,30 @@
 "use client"
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { trpc } from '../_trpc/client'
-import { Loader2 } from 'lucide-react'
+import { useQuery } from "@tanstack/react-query"
+import { getAuthStatus } from "./actions"
+import { Loader2 } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+
 
 const Page = () => {
-  const router = useRouter()
 
+  const router = useRouter()
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin')
 
-  trpc.authCallback.useQuery(undefined, {
-    onSuccess: ({ success }) => {
-      if (success) {
-        // user is synced to db
-        router.push(origin ? `/${origin}` : '/dashboard')
-      }
-    },
-    onError: (err) => {
-      if (err.data?.code === 'UNAUTHORIZED') {
-        router.push('/sign-in')
-      }
-    },
+
+  const { data, error } = useQuery({
+    queryKey: ["auth-callback"],
+    queryFn: async () => await getAuthStatus(),
     retry: true,
     retryDelay: 500,
   })
+
+  if (data?.success) {
+    router.push(origin ? `/${origin}` : '/dashboard');
+  } else {
+    router.push('/sign-in');
+  }
 
   return (
     <div className='w-full mt-24 flex justify-center'>
@@ -37,6 +37,7 @@ const Page = () => {
       </div>
     </div>
   )
+
 }
 
 export default Page
