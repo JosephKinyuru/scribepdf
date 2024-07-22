@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/src/app/pricing2
+/src/components/MobileMenu/Menu2.tsx
 
 # next.js
 /.next/
