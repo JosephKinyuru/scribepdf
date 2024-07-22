@@ -9,6 +9,7 @@
 # testing
 /coverage
 /src/app/pricing2
+/src/app/authentication
 /src/components/MobileMenu/Menu2.tsx
 
 # next.js
