@@ -1,18 +1,17 @@
 import Link from "next/link"
 import MaxWidthWrapper from "./MaxWidthWrapper"
 import { buttonVariants } from "./ui/button"
-import { SignInButton, SignUpButton } from "@clerk/nextjs"
-import { ArrowRight } from "lucide-react"
 import { currentUser, } from "@clerk/nextjs/server"
 import UserAccountNav from "./UserAccountNav"
-import MobileNav from "./MobileNav"
+import Menu from "./MobileMenu/Menu"
+import { ArrowRight } from "lucide-react"
 
 const Navbar = async () => {
 
   const user = await currentUser()
 
   return (
-    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
+    <nav className="fixed md:sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
         <MaxWidthWrapper>
             <div className="flex h-14 items-center justify-between border-b border-zinc-200 ">
                 <Link 
@@ -22,7 +21,7 @@ const Navbar = async () => {
                     <span>intelliPDF</span>
                 </Link>
 
-                <MobileNav isAuth={!!user}/>
+                <Menu isAuth={!!user}/>
 
                 <div className="hidden items-center space-x-4 sm:flex">
                     {!user ? (
@@ -36,23 +35,24 @@ const Navbar = async () => {
                             >
                                 Pricing
                             </Link>
-                            <SignInButton
-                            //@ts-ignore
-                            className={buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            })}
+                            <Link
+                                href="/sign-in"
+                                className={buttonVariants({
+                                    variant: "ghost",
+                                    size: "sm",
+                                })}
                             >
                                 Sign in
-                            </SignInButton>
-                            <SignUpButton
-                            //@ts-ignore
-                            className={buttonVariants({
-                                size: "sm",
-                            })}
+                            </Link>
+                            <Link
+                                href="/sign-up"
+                                className={buttonVariants({
+                                    size: "sm",
+                                })}
                             >
                                 Get started 
-                            </SignUpButton>
+                                <ArrowRight className='ml-1.5 h-5 w-5' />
+                            </Link>
                         </>
                     ) : (
                         <>
