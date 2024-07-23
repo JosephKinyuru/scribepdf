@@ -89,6 +89,22 @@ const Menu = ({ isAuth}: {isAuth: boolean}) => {
                               </Link>
                             </motion.div>
                             <motion.div 
+                              className="relative flex items-center"
+                              variants={slide}
+                              animate="enter"
+                              exit="exit"
+                              initial="initial"
+                              custom={2}
+                            >
+                              <Link
+                                href='/pricing'
+                                onClick={toggleOpen}
+                                className="no-underline text-slate-950 font-normal pb-8"
+                              >
+                                Pricing
+                              </Link>
+                            </motion.div>
+                            <motion.div 
                               className="relative flex items-center text-slate-950"
                               variants={slide}
                               animate="enter"
@@ -105,10 +121,11 @@ const Menu = ({ isAuth}: {isAuth: boolean}) => {
                   </div>
 
                   <div className="flex w-full justify-between text-sm gap-x-10 mr-12 text-slate-800">
-                    <a>Awards</a>
-                    <a>Instagram</a>
-                    <a>Dribble</a>
-                    <a>LinkedIn</a>
+                    { FooterItems.map( (item, index) => (
+                      <Link href={item.href} key={`${index}@@#`}>
+                        {item.title}
+                      </Link>
+                    ))}
                   </div> 
 
                 </div>
@@ -137,3 +154,19 @@ const NavItems = [
     href: "/pricing"
   }
 ]
+
+const FooterItems = [
+  {
+    title: "Terms",
+    href: "#"
+  },
+  {
+    title: "Privacy",
+    href: "#"
+  },
+  {
+    title: "Cookies",
+    href: "#"
+  }
+]
+
