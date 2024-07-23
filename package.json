@@ -16,7 +16,7 @@
     "@langchain/openai": "^0.2.1",
     "@langchain/pinecone": "^0.0.7",
     "@mantine/hooks": "^7.11.1",
-    "@pinecone-database/pinecone": "^2.2.2",
+    "@pinecone-database/pinecone": "^3.0.0",
     "@prisma/client": "^5.16.1",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
