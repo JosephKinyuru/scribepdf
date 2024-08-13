@@ -71,7 +71,7 @@ const Page = async () => {
     <>
         <MaxWidthWrapper classname="mb-8 mt-24 text-center max-w-5xl">
             <div className="mx-auto mb-10 sm:max-w-lg">
-                <h1 className="text-6xl font-bold sm:text-7xl">Pricing</h1>
+                <h1 className="text-6xl font-bold sm:text-7xl      bg-gradient-to-b from-black to-[#f59e0b] text-transparent bg-clip-text tracking-tighter">Pricing</h1>
                 <p className="mt-5 text-gray-600 sm:text-lg">
                     Whether you&apos;re just trying out our service and need more, we&apos;ve got you covered.
                 </p>
@@ -87,12 +87,12 @@ const Page = async () => {
                                 key={plan} 
                                 className={cn(
                                     "relative rounded-2xl bg-white shadow-lg",{
-                                        "border-2 border-blue-600 shadow-blue-200": plan === "Pro",
+                                        "border-2 border-orange-600 shadow-orange-200": plan === "Pro",
                                         "border border-gray-200": plan !== "Pro"
                                     }
                             )}>
                                 {plan === "Pro" && (
-                                    <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-2 text-sm font-medium text-white">
+                                    <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 px-3 py-2 text-sm font-medium text-white">
                                         Upgrade now
                                     </div>
                                 )}
@@ -129,7 +129,7 @@ const Page = async () => {
                                                 {negative ? (
                                                     <Minus className="h-6 w-6 text-gray-600"/>
                                                 ) : ( 
-                                                    <Check className="h-6 w-6 text-blue-600"/>
+                                                    <Check className="h-6 w-6 text-orange-600"/>
                                                 )}
                                             </div>
                                             {footnote ? (
