@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
         openAIApiKey: process.env.OPENAI_API_KEY,
     })
 
-    const pineconeIndex = pinecone.index("intelli-pdf")
+    const pineconeIndex = pinecone.index(process.env.PINECONE_INDEX!)
 
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
         pineconeIndex,
